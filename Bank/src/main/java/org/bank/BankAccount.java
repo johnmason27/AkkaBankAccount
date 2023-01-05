@@ -1,8 +1,13 @@
 package org.bank;
 
 import akka.actor.AbstractActor;
+import akka.event.Logging;
+import akka.event.LoggingAdapter;
+import org.bank.messages.DepositMessage;
+import org.bank.messages.WithdrawMessage;
 
 public class BankAccount extends AbstractActor {
+    private final LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
     private int balance;
 
     public BankAccount() {
@@ -19,12 +24,14 @@ public class BankAccount extends AbstractActor {
     }
 
     public void onDeposit(DepositMessage msg) {
+        log.info("Handling deposit message: " + msg.iteration);
         System.out.printf("Depositing: £%d%n", msg.amount);
         this.balance += msg.amount;
         System.out.printf("New balance: £%d%n", this.balance);
     }
 
     public void onWithdraw(WithdrawMessage msg) {
+        log.info("Handling withdraw message: " + msg.iteration);
         System.out.printf("Withdrawing: £%d%n", msg.amount);
         this.balance += msg.amount;
         System.out.printf("New balance: £%d%n", this.balance);
